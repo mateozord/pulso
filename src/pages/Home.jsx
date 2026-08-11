@@ -1,8 +1,8 @@
 function Home() {
   return (
     <section>
-      <h1>Home</h1>
-      <p>Em breve: hero, busca e shows em destaque.</p>
+      <h1>O que toca na sua cidade?</h1>
+      <p>Em breve: busca e shows em destaque.</p>
     </section>
   )
 }

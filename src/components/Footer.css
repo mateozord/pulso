@@ -1,0 +1,24 @@
+.footer {
+  margin-top: auto;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.footer__tagline {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+}
+
+.footer__meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
