@@ -1,0 +1,62 @@
+.artista {
+  padding: var(--space-6) 0;
+  max-width: 48rem;
+}
+
+.artista__image-wrap {
+  aspect-ratio: 21 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+}
+
+.artista__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.artista__image-skeleton {
+  aspect-ratio: 21 / 9;
+  border-radius: var(--radius);
+  display: block;
+}
+
+.artista__image-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--color-text-muted);
+}
+
+.artista__body {
+  padding-top: var(--space-6);
+}
+
+.artista__genre {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.artista__name {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: var(--space-2);
+  line-height: 1.1;
+}
+
+.artista__official-link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+.artista__official-link:hover {
+  color: var(--color-accent);
+}

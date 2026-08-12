@@ -6,17 +6,35 @@ import { getEvents } from '../services/ticketmaster'
  * 'loading' -> 'success' | 'error'. A UI decide o que renderizar em
  * cada fase (skeleton, lista, ou mensagem de erro) olhando `status`.
  */
-export function useEvents({ city, keyword, genre, startDate, endDate, size, sort } = {}) {
-  const [status, setStatus] = useState('loading')
+export function useEvents({
+  city,
+  keyword,
+  genre,
+  startDate,
+  endDate,
+  attractionId,
+  size,
+  sort,
+  enabled = true,
+} = {}) {
+  const [status, setStatus] = useState(enabled ? 'loading' : 'idle')
   const [events, setEvents] = useState([])
   const [error, setError] = useState(null)
   const [retryCount, setRetryCount] = useState(0)
 
   useEffect(() => {
+    // `enabled: false` existe pra casos como a página Artista: não faz
+    // sentido buscar "eventos do artista X" antes de sabermos que o
+    // artista X existe — evita uma chamada extra e desnecessária à API.
+    if (!enabled) {
+      setStatus('idle')
+      return
+    }
+
     let cancelled = false
     setStatus('loading')
 
-    getEvents({ city, keyword, genre, startDate, endDate, size, sort })
+    getEvents({ city, keyword, genre, startDate, endDate, attractionId, size, sort })
       .then((result) => {
         if (cancelled) return
         setEvents(result.events)
@@ -33,7 +51,7 @@ export function useEvents({ city, keyword, genre, startDate, endDate, size, sort
     return () => {
       cancelled = true
     }
-  }, [city, keyword, genre, startDate, endDate, size, sort, retryCount])
+  }, [city, keyword, genre, startDate, endDate, attractionId, size, sort, enabled, retryCount])
 
   const retry = useCallback(() => setRetryCount((count) => count + 1), [])
 

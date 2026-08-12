@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate } from '../utils/formatDate'
-import { getEventImage } from '../utils/eventImage'
+import { getBestImage } from '../utils/image'
 import './EventCard.css'
 
 function EventCard({ event }) {
-  const image = getEventImage(event)
+  const image = getBestImage(event)
   const venue = event._embedded?.venues?.[0]
   const date = formatEventDate(event.dates?.start?.localDate, event.dates?.start?.localTime)
 

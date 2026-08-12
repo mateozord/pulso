@@ -1,17 +1,12 @@
 import { Link, useParams } from 'react-router-dom'
 import { useEvent } from '../hooks/useEvent'
 import { formatEventDate } from '../utils/formatDate'
-import { getEventImage } from '../utils/eventImage'
+import { getBestImage } from '../utils/image'
+import { getGenreLabel } from '../utils/genreLabel'
 import { formatVenueAddress, getMapsSearchUrl } from '../utils/venueAddress'
 import Skeleton from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
 import './Evento.css'
-
-function getGenreLabel(event) {
-  const genre = event.classifications?.[0]?.genre?.name
-  if (!genre || genre === 'Undefined') return null
-  return genre
-}
 
 function Evento() {
   const { id } = useParams()
@@ -45,7 +40,7 @@ function Evento() {
     return <StateMessage title="Não conseguimos carregar esse evento." description={error} onRetry={retry} />
   }
 
-  const image = getEventImage(event)
+  const image = getBestImage(event)
   const venue = event._embedded?.venues?.[0]
   const attraction = event._embedded?.attractions?.[0]
   const date = formatEventDate(event.dates?.start?.localDate, event.dates?.start?.localTime)
