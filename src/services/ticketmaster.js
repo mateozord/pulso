@@ -22,16 +22,22 @@ async function request(path, params = {}) {
   }
 
   if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error('Chave de API inválida ou não autorizada.')
-    }
-    if (response.status === 429) {
-      throw new Error('Limite de requisições da API atingido. Tente novamente em instantes.')
-    }
-    throw new Error(`Erro ao buscar dados (status ${response.status}).`)
+    // Guardamos o status HTTP no próprio erro (não só na mensagem) pra
+    // quem chamar `request` conseguir distinguir "não encontrado" (404)
+    // de outros tipos de falha, sem precisar analisar texto.
+    const error = new Error(errorMessageFor(response.status))
+    error.status = response.status
+    throw error
   }
 
   return response.json()
+}
+
+function errorMessageFor(status) {
+  if (status === 401) return 'Chave de API inválida ou não autorizada.'
+  if (status === 404) return 'Não encontrado.'
+  if (status === 429) return 'Limite de requisições da API atingido. Tente novamente em instantes.'
+  return `Erro ao buscar dados (status ${status}).`
 }
 
 /**
