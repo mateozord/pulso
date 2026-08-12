@@ -1,21 +1,14 @@
 import { CITIES } from '../utils/cities'
-import './CitySelector.css'
+import Dropdown from './Dropdown'
 
 function CitySelector({ value, onChange, allowAll = false }) {
+  const options = [
+    ...(allowAll ? [{ value: '', label: 'Todas as cidades' }] : []),
+    ...CITIES.map((city) => ({ value: city, label: city })),
+  ]
+
   return (
-    <select
-      className="city-selector"
-      value={value}
-      onChange={(event) => onChange(event.target.value)}
-      aria-label="Cidade"
-    >
-      {allowAll && <option value="">Todas as cidades</option>}
-      {CITIES.map((city) => (
-        <option key={city} value={city}>
-          {city}
-        </option>
-      ))}
-    </select>
+    <Dropdown value={value} onChange={onChange} options={options} ariaLabel="Cidade" className="city-selector" />
   )
 }
 

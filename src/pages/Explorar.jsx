@@ -6,7 +6,10 @@ import { GENRES } from '../utils/genres'
 import CitySelector from '../components/CitySelector'
 import SearchBar from '../components/SearchBar'
 import EventRailSection from '../components/EventRailSection'
+import Dropdown from '../components/Dropdown'
 import './Explorar.css'
+
+const GENRE_OPTIONS = [{ value: '', label: 'Todos os gêneros' }, ...GENRES.map((genre) => ({ value: genre, label: genre }))]
 
 const PERIODS = [
   { value: 'qualquer', label: 'Qualquer data' },
@@ -59,32 +62,9 @@ function Explorar() {
         <div className="explorar-filters">
           <CitySelector value={city} onChange={setCity} allowAll />
 
-          <select
-            className="explorar-filters__select"
-            value={genre}
-            onChange={(event) => setGenre(event.target.value)}
-            aria-label="Gênero"
-          >
-            <option value="">Todos os gêneros</option>
-            {GENRES.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+          <Dropdown value={genre} onChange={setGenre} options={GENRE_OPTIONS} ariaLabel="Gênero" />
 
-          <select
-            className="explorar-filters__select"
-            value={period}
-            onChange={(event) => setPeriod(event.target.value)}
-            aria-label="Período"
-          >
-            {PERIODS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <Dropdown value={period} onChange={setPeriod} options={PERIODS} ariaLabel="Período" />
 
           <SearchBar onSearch={setKeyword} defaultValue={keyword} />
         </div>
