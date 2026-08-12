@@ -51,7 +51,9 @@ export async function getEvents({
   const data = await request('/events.json', {
     city,
     keyword,
-    classificationName: genre ?? 'music',
+    // `||` (não `??`) de propósito: genre='' (opção "todos os gêneros"
+    // no filtro) também deve cair no padrão 'music', não virar string vazia.
+    classificationName: genre || 'music',
     startDateTime: startDate,
     endDateTime: endDate,
     size,

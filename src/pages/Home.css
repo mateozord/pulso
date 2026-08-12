@@ -41,5 +41,11 @@
 @media (max-width: 600px) {
   .hero__controls {
     flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .hero__controls > * {
+    width: 100%;
+    flex: none;
   }
 }

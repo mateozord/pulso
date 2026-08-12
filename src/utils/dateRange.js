@@ -1,16 +1,21 @@
 /**
  * A Discovery API espera startDateTime/endDateTime no formato
- * "AAAA-MM-DDTHH:mm:ssZ" (UTC). Calculamos a janela "hoje até daqui
- * 7 dias" para a seção "Acontecendo esta semana".
+ * "AAAA-MM-DDTHH:mm:ssZ" (UTC). getDateRangeFromToday cobre "hoje até
+ * daqui N dias" — usado tanto na Home ("esta semana") quanto nos
+ * filtros de período do Explorar.
  */
-export function getThisWeekRange() {
+export function getDateRangeFromToday(days) {
   const now = new Date()
-  const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+  const end = new Date(now.getTime() + days * 24 * 60 * 60 * 1000)
 
   return {
     startDate: toTicketmasterUTC(now),
-    endDate: toTicketmasterUTC(in7Days),
+    endDate: toTicketmasterUTC(end),
   }
+}
+
+export function getThisWeekRange() {
+  return getDateRangeFromToday(7)
 }
 
 function toTicketmasterUTC(date) {
