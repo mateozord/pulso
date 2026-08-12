@@ -4,9 +4,11 @@ import EventCard from '../components/EventCard'
 import { EventCardSkeleton } from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
 import Reveal from '../components/Reveal'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Favoritos.css'
 
 function Favoritos() {
+  usePageTitle('Favoritos')
   const { user } = useAuth()
   const { favorites, status } = useFavorites()
 

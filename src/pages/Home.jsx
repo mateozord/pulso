@@ -10,9 +10,11 @@ import GenreChips from '../components/GenreChips'
 import Reveal from '../components/Reveal'
 import PulseLine from '../components/PulseLine'
 import LiveDot from '../components/LiveDot'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Home.css'
 
 function Home() {
+  usePageTitle()
   const [city, setCity] = useState('São Paulo')
   const [keyword, setKeyword] = useState('')
 

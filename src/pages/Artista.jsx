@@ -8,11 +8,13 @@ import StateMessage from '../components/StateMessage'
 import EventRailSection from '../components/EventRailSection'
 import EventImage from '../components/EventImage'
 import Reveal from '../components/Reveal'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Artista.css'
 
 function Artista() {
   const { id } = useParams()
   const { artist, status, error, retry } = useArtist(id)
+  usePageTitle(artist?.name)
 
   // Só busca os eventos depois que o artista existir de fato — evita
   // uma chamada extra e desnecessária à API enquanto isso não é sabido.

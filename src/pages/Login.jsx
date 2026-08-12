@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Login.css'
 
 function Login() {
@@ -8,6 +9,7 @@ function Login() {
   const navigate = useNavigate()
 
   const [mode, setMode] = useState('entrar') // 'entrar' | 'cadastrar'
+  usePageTitle(mode === 'entrar' ? 'Entrar' : 'Criar conta')
   const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

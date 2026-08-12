@@ -7,6 +7,7 @@ import CitySelector from '../components/CitySelector'
 import SearchBar from '../components/SearchBar'
 import EventRailSection from '../components/EventRailSection'
 import Dropdown from '../components/Dropdown'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Explorar.css'
 
 const GENRE_OPTIONS = [{ value: '', label: 'Todos os gêneros' }, ...GENRES.map((genre) => ({ value: genre, label: genre }))]
@@ -26,6 +27,7 @@ function getPeriodRange(period) {
 }
 
 function Explorar() {
+  usePageTitle('Explorar')
   const [searchParams, setSearchParams] = useSearchParams()
 
   // A URL é a fonte de verdade dos filtros: ao entrar via link (ex.:

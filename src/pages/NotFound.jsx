@@ -1,6 +1,9 @@
 import StateMessage from '../components/StateMessage'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 function NotFound() {
+  usePageTitle('Página não encontrada')
+
   return (
     <StateMessage
       title="Essa página não existe."

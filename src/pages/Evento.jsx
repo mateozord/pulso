@@ -9,11 +9,16 @@ import StateMessage from '../components/StateMessage'
 import FavoriteButton from '../components/FavoriteButton'
 import EventImage from '../components/EventImage'
 import Reveal from '../components/Reveal'
+import { usePageTitle } from '../hooks/usePageTitle'
 import './Evento.css'
 
 function Evento() {
   const { id } = useParams()
   const { event, status, error, retry } = useEvent(id)
+  // Hooks rodam sempre na mesma ordem, então isso precisa vir antes
+  // dos "returns" antecipados de loading/erro — enquanto isso, cai no
+  // título padrão (event?.name é undefined até o evento carregar).
+  usePageTitle(event?.name)
 
   if (status === 'loading') {
     return (
