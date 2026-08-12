@@ -4,10 +4,17 @@
 }
 
 .evento__image-wrap {
+  position: relative;
   aspect-ratio: 16 / 9;
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--color-bg-elevated);
+}
+
+.evento__favorite {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
 }
 
 .evento__image {

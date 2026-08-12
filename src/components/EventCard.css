@@ -1,6 +1,5 @@
 .event-card {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--color-bg-elevated);
@@ -11,6 +10,18 @@
 .event-card:hover {
   transform: translateY(-4px);
   border-color: var(--color-accent);
+}
+
+.event-card__link {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card__favorite {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
 }
 
 .event-card__image-wrap {

@@ -6,6 +6,7 @@ import { getGenreLabel } from '../utils/genreLabel'
 import { formatVenueAddress, getMapsSearchUrl } from '../utils/venueAddress'
 import Skeleton from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
+import FavoriteButton from '../components/FavoriteButton'
 import './Evento.css'
 
 function Evento() {
@@ -59,6 +60,7 @@ function Evento() {
             PULSO
           </div>
         )}
+        <FavoriteButton event={event} className="evento__favorite" />
       </div>
 
       <div className="evento__body">

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate } from '../utils/formatDate'
 import { getBestImage } from '../utils/image'
+import FavoriteButton from './FavoriteButton'
 import './EventCard.css'
 
 function EventCard({ event }) {
@@ -9,27 +10,31 @@ function EventCard({ event }) {
   const date = formatEventDate(event.dates?.start?.localDate, event.dates?.start?.localTime)
 
   return (
-    <Link to={`/evento/${event.id}`} className="event-card">
-      <div className="event-card__image-wrap">
-        {image ? (
-          <img src={image} alt="" className="event-card__image" loading="lazy" />
-        ) : (
-          <div className="event-card__image-fallback" aria-hidden="true">
-            PULSO
-          </div>
-        )}
-      </div>
-      <div className="event-card__body">
-        <span className="event-card__date">{date}</span>
-        <h3 className="event-card__name">{event.name}</h3>
-        {venue && (
-          <span className="event-card__venue">
-            {venue.name}
-            {venue.city?.name ? ` · ${venue.city.name}` : ''}
-          </span>
-        )}
-      </div>
-    </Link>
+    <div className="event-card">
+      <FavoriteButton event={event} className="event-card__favorite" />
+
+      <Link to={`/evento/${event.id}`} className="event-card__link">
+        <div className="event-card__image-wrap">
+          {image ? (
+            <img src={image} alt="" className="event-card__image" loading="lazy" />
+          ) : (
+            <div className="event-card__image-fallback" aria-hidden="true">
+              PULSO
+            </div>
+          )}
+        </div>
+        <div className="event-card__body">
+          <span className="event-card__date">{date}</span>
+          <h3 className="event-card__name">{event.name}</h3>
+          {venue && (
+            <span className="event-card__venue">
+              {venue.name}
+              {venue.city?.name ? ` · ${venue.city.name}` : ''}
+            </span>
+          )}
+        </div>
+      </Link>
+    </div>
   )
 }
 
