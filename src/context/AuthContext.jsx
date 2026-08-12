@@ -30,8 +30,14 @@ export function AuthProvider({ children }) {
     return () => subscription.subscription.unsubscribe()
   }, [])
 
-  async function signUp(email, password) {
-    const { data, error } = await supabase.auth.signUp({ email, password })
+  async function signUp(email, password, nickname) {
+    // `options.data` vira `user_metadata` — um jeito de guardar campos
+    // extras do perfil sem precisar criar uma tabela nova só pra isso.
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { nickname } },
+    })
     if (error) throw error
     // Se "Confirm email" estiver desligado no projeto, o Supabase já
     // devolve uma sessão válida aqui — a pessoa nasce logada, sem

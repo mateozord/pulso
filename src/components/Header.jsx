@@ -4,6 +4,9 @@ import './Header.css'
 
 function Header() {
   const { user, signOut } = useAuth()
+  // Contas criadas antes do campo de apelido existir não têm
+  // `user_metadata.nickname` — cai pro início do e-mail nesse caso.
+  const displayName = user?.user_metadata?.nickname || user?.email?.split('@')[0]
 
   return (
     <header className="header">
@@ -19,9 +22,12 @@ function Header() {
             Favoritos
           </NavLink>
           {user ? (
-            <button type="button" className="header__link header__link--button" onClick={signOut}>
-              Sair
-            </button>
+            <span className="header__user">
+              <span className="header__nickname">{displayName}</span>
+              <button type="button" className="header__link header__link--button" onClick={signOut}>
+                Sair
+              </button>
+            </span>
           ) : (
             <NavLink to="/login" className="header__link">
               Entrar

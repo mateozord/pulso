@@ -50,3 +50,21 @@
   font-family: inherit;
   cursor: pointer;
 }
+
+.header__user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.header__nickname {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+@media (max-width: 500px) {
+  .header__nickname {
+    display: none;
+  }
+}

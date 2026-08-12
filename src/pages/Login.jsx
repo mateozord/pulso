@@ -8,6 +8,7 @@ function Login() {
   const navigate = useNavigate()
 
   const [mode, setMode] = useState('entrar') // 'entrar' | 'cadastrar'
+  const [nickname, setNickname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'confirm-email'
@@ -23,7 +24,7 @@ function Login() {
         await signIn(email, password)
         navigate('/')
       } else {
-        const { session } = await signUp(email, password)
+        const { session } = await signUp(email, password, nickname)
         if (session) {
           // "Confirm email" está desligado no projeto — já está logado.
           navigate('/')
@@ -58,6 +59,21 @@ function Login() {
       <h1>{mode === 'entrar' ? 'Entrar' : 'Criar conta'}</h1>
 
       <form className="login__form" onSubmit={handleSubmit}>
+        {mode === 'cadastrar' && (
+          <label className="login__field">
+            Apelido
+            <input
+              type="text"
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
+              required
+              maxLength={30}
+              autoComplete="nickname"
+              placeholder="Como quer ser chamado"
+            />
+          </label>
+        )}
+
         <label className="login__field">
           E-mail
           <input
