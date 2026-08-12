@@ -6,7 +6,7 @@ import { getEvents } from '../services/ticketmaster'
  * 'loading' -> 'success' | 'error'. A UI decide o que renderizar em
  * cada fase (skeleton, lista, ou mensagem de erro) olhando `status`.
  */
-export function useEvents({ city, keyword, genre } = {}) {
+export function useEvents({ city, keyword, genre, startDate, endDate, size, sort } = {}) {
   const [status, setStatus] = useState('loading')
   const [events, setEvents] = useState([])
   const [error, setError] = useState(null)
@@ -16,7 +16,7 @@ export function useEvents({ city, keyword, genre } = {}) {
     let cancelled = false
     setStatus('loading')
 
-    getEvents({ city, keyword, genre })
+    getEvents({ city, keyword, genre, startDate, endDate, size, sort })
       .then((result) => {
         if (cancelled) return
         setEvents(result.events)
@@ -33,7 +33,7 @@ export function useEvents({ city, keyword, genre } = {}) {
     return () => {
       cancelled = true
     }
-  }, [city, keyword, genre, retryCount])
+  }, [city, keyword, genre, startDate, endDate, size, sort, retryCount])
 
   const retry = useCallback(() => setRetryCount((count) => count + 1), [])
 

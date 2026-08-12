@@ -38,7 +38,16 @@ async function request(path, params = {}) {
  * Busca eventos musicais. A Discovery API não devolve `_embedded`
  * quando não há resultados, por isso o `?? []` abaixo.
  */
-export async function getEvents({ city, keyword, genre, startDate, endDate, size = 20, page = 0 } = {}) {
+export async function getEvents({
+  city,
+  keyword,
+  genre,
+  startDate,
+  endDate,
+  size = 20,
+  page = 0,
+  sort = 'date,asc',
+} = {}) {
   const data = await request('/events.json', {
     city,
     keyword,
@@ -47,7 +56,7 @@ export async function getEvents({ city, keyword, genre, startDate, endDate, size
     endDateTime: endDate,
     size,
     page,
-    sort: 'date,asc',
+    sort,
   })
 
   return {

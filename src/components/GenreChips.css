@@ -1,0 +1,20 @@
+.genre-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.genre-chip {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.genre-chip:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
