@@ -7,6 +7,7 @@ import { formatVenueAddress, getMapsSearchUrl } from '../utils/venueAddress'
 import Skeleton from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
 import FavoriteButton from '../components/FavoriteButton'
+import EventImage from '../components/EventImage'
 import './Evento.css'
 
 function Evento() {
@@ -53,13 +54,7 @@ function Evento() {
   return (
     <article className="evento">
       <div className="evento__image-wrap">
-        {image ? (
-          <img src={image} alt="" className="evento__image" />
-        ) : (
-          <div className="evento__image-fallback" aria-hidden="true">
-            PULSO
-          </div>
-        )}
+        <EventImage src={image} className="evento__image" fallbackClassName="evento__image-fallback" />
         <FavoriteButton event={event} className="evento__favorite" />
       </div>
 

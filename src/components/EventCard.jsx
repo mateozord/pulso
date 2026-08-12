@@ -3,6 +3,7 @@ import { formatEventDate } from '../utils/formatDate'
 import { getBestImage } from '../utils/image'
 import { getVenueLocationLabel } from '../utils/venueAddress'
 import FavoriteButton from './FavoriteButton'
+import EventImage from './EventImage'
 import './EventCard.css'
 
 function EventCard({ event }) {
@@ -17,13 +18,12 @@ function EventCard({ event }) {
 
       <Link to={`/evento/${event.id}`} className="event-card__link">
         <div className="event-card__image-wrap">
-          {image ? (
-            <img src={image} alt="" className="event-card__image" loading="lazy" />
-          ) : (
-            <div className="event-card__image-fallback" aria-hidden="true">
-              PULSO
-            </div>
-          )}
+          <EventImage
+            src={image}
+            className="event-card__image"
+            fallbackClassName="event-card__image-fallback"
+            loading="lazy"
+          />
         </div>
         <div className="event-card__body">
           <span className="event-card__date">{date}</span>

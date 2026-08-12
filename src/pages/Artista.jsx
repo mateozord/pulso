@@ -6,6 +6,7 @@ import { getGenreLabel } from '../utils/genreLabel'
 import Skeleton from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
 import EventRailSection from '../components/EventRailSection'
+import EventImage from '../components/EventImage'
 import './Artista.css'
 
 function Artista() {
@@ -50,13 +51,7 @@ function Artista() {
     <>
       <article className="artista">
         <div className="artista__image-wrap">
-          {image ? (
-            <img src={image} alt="" className="artista__image" />
-          ) : (
-            <div className="artista__image-fallback" aria-hidden="true">
-              PULSO
-            </div>
-          )}
+          <EventImage src={image} className="artista__image" fallbackClassName="artista__image-fallback" />
         </div>
 
         <div className="artista__body">
