@@ -1,3 +1,5 @@
+import { getVenueLocationLabel } from './venueAddress'
+
 /**
  * Não existe endpoint de "locais em alta" na API — então derivamos os
  * locais a partir dos próprios eventos já buscados, contando quantos
@@ -17,7 +19,7 @@ export function extractVenues(events, limit = 6) {
       venueMap.set(venue.id, {
         id: venue.id,
         name: venue.name,
-        city: venue.city?.name,
+        city: getVenueLocationLabel(venue),
         eventCount: 1,
       })
     }

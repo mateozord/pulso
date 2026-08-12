@@ -1,15 +1,5 @@
+import { CITIES } from '../utils/cities'
 import './CitySelector.css'
-
-export const CITIES = [
-  'São Paulo',
-  'Rio de Janeiro',
-  'Belo Horizonte',
-  'Curitiba',
-  'Porto Alegre',
-  'Salvador',
-  'Recife',
-  'Brasília',
-]
 
 function CitySelector({ value, onChange, allowAll = false }) {
   return (

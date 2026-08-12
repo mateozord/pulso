@@ -1,8 +1,15 @@
+import { getCityCoordinates } from '../utils/cities'
+
 // Chamamos nosso próprio proxy (/api/ticketmaster), não a Ticketmaster
 // diretamente: a API dela não permite CORS a partir do navegador. O
 // proxy (configurado em vite.config.js) injeta a apikey no lado do
 // servidor, então ela nunca aparece no código que roda no navegador.
 const BASE_URL = '/api/ticketmaster'
+
+// Raio de busca ao redor do centro de cada cidade. Grande o bastante
+// pra cobrir a região metropolitana, pequeno o bastante pra não
+// invadir a cidade vizinha da nossa lista curada.
+const CITY_SEARCH_RADIUS_KM = 50
 
 async function request(path, params = {}) {
   const url = new URL(`${BASE_URL}${path}`, window.location.origin)
@@ -43,6 +50,15 @@ function errorMessageFor(status) {
 /**
  * Busca eventos musicais. A Discovery API não devolve `_embedded`
  * quando não há resultados, por isso o `?? []` abaixo.
+ *
+ * Sobre `city`: descobrimos testando com dados reais que o campo
+ * `venue.city` vem vazio pros locais brasileiros na Discovery API —
+ * ou seja, o parâmetro de busca `city` (que filtra por esse campo)
+ * não retorna nada pro Brasil, mesmo quando o evento existe. As
+ * coordenadas do local (`venue.location`), porém, vêm preenchidas
+ * corretamente. Por isso resolvemos o nome da cidade pra coordenadas
+ * (ver utils/cities.js) e fazemos busca por raio (`latlong`+`radius`)
+ * em vez de busca por texto.
  */
 export async function getEvents({
   city,
@@ -55,8 +71,9 @@ export async function getEvents({
   page = 0,
   sort = 'date,asc',
 } = {}) {
+  const coordinates = city ? getCityCoordinates(city) : null
+
   const data = await request('/events.json', {
-    city,
     keyword,
     attractionId,
     // `||` (não `??`) de propósito: genre='' (opção "todos os gêneros"
@@ -64,6 +81,9 @@ export async function getEvents({
     classificationName: genre || 'music',
     startDateTime: startDate,
     endDateTime: endDate,
+    latlong: coordinates ? `${coordinates.lat},${coordinates.lng}` : undefined,
+    radius: coordinates ? CITY_SEARCH_RADIUS_KM : undefined,
+    unit: coordinates ? 'km' : undefined,
     size,
     page,
     sort,

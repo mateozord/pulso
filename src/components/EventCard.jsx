@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { formatEventDate } from '../utils/formatDate'
 import { getBestImage } from '../utils/image'
+import { getVenueLocationLabel } from '../utils/venueAddress'
 import FavoriteButton from './FavoriteButton'
 import './EventCard.css'
 
@@ -8,6 +9,7 @@ function EventCard({ event }) {
   const image = getBestImage(event)
   const venue = event._embedded?.venues?.[0]
   const date = formatEventDate(event.dates?.start?.localDate, event.dates?.start?.localTime)
+  const location = getVenueLocationLabel(venue)
 
   return (
     <div className="event-card">
@@ -29,7 +31,7 @@ function EventCard({ event }) {
           {venue && (
             <span className="event-card__venue">
               {venue.name}
-              {venue.city?.name ? ` · ${venue.city.name}` : ''}
+              {location ? ` · ${location}` : ''}
             </span>
           )}
         </div>
