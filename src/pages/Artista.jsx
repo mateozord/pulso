@@ -7,6 +7,7 @@ import Skeleton from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
 import EventRailSection from '../components/EventRailSection'
 import EventImage from '../components/EventImage'
+import Reveal from '../components/Reveal'
 import './Artista.css'
 
 function Artista() {
@@ -49,7 +50,7 @@ function Artista() {
 
   return (
     <>
-      <article className="artista">
+      <Reveal as="article" className="artista">
         <div className="artista__image-wrap">
           <EventImage src={image} className="artista__image" fallbackClassName="artista__image-fallback" />
         </div>
@@ -63,7 +64,7 @@ function Artista() {
             </a>
           )}
         </div>
-      </article>
+      </Reveal>
 
       <EventRailSection
         layout="grid"

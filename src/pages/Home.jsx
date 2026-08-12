@@ -7,6 +7,7 @@ import SearchBar from '../components/SearchBar'
 import EventRailSection from '../components/EventRailSection'
 import VenueCard from '../components/VenueCard'
 import GenreChips from '../components/GenreChips'
+import Reveal from '../components/Reveal'
 import './Home.css'
 
 function Home() {
@@ -26,7 +27,7 @@ function Home() {
 
   return (
     <>
-      <section className="hero">
+      <Reveal as="section" className="hero">
         <h1 className="hero__title">O que toca na sua cidade?</h1>
         <p className="hero__subtitle">
           Descubra shows, artistas e noites que você não sabia que estavam acontecendo.
@@ -35,7 +36,7 @@ function Home() {
           <CitySelector value={city} onChange={setCity} />
           <SearchBar onSearch={setKeyword} />
         </div>
-      </section>
+      </Reveal>
 
       <EventRailSection
         layout="grid"
@@ -65,13 +66,13 @@ function Home() {
         emptyMessage={`Nenhum destaque encontrado em ${city} no momento.`}
       />
 
-      <section className="home-section">
+      <Reveal as="section" className="home-section">
         <h2 className="home-section__title">Explore por gênero</h2>
         <GenreChips />
-      </section>
+      </Reveal>
 
       {venues.length > 0 && (
-        <section className="home-section">
+        <Reveal as="section" className="home-section">
           <h2 className="home-section__title">Lugares que estão pulsando</h2>
           <div className="rail">
             {venues.map((venue) => (
@@ -80,7 +81,7 @@ function Home() {
               </div>
             ))}
           </div>
-        </section>
+        </Reveal>
       )}
     </>
   )

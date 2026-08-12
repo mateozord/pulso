@@ -8,6 +8,7 @@ import Skeleton from '../components/Skeleton'
 import StateMessage from '../components/StateMessage'
 import FavoriteButton from '../components/FavoriteButton'
 import EventImage from '../components/EventImage'
+import Reveal from '../components/Reveal'
 import './Evento.css'
 
 function Evento() {
@@ -52,7 +53,7 @@ function Evento() {
   const description = event.info || event.pleaseNote
 
   return (
-    <article className="evento">
+    <Reveal as="article" className="evento">
       <div className="evento__image-wrap">
         <EventImage src={image} className="evento__image" fallbackClassName="evento__image-fallback" />
         <FavoriteButton event={event} className="evento__favorite" />
@@ -100,7 +101,7 @@ function Evento() {
           <span className="evento__source">Fonte: Ticketmaster</span>
         </div>
       </div>
-    </article>
+    </Reveal>
   )
 }
 

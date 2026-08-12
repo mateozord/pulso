@@ -26,6 +26,25 @@
   color: var(--color-accent);
 }
 
+/* `animation` (não `transition`) toca uma vez sempre que a classe é
+   aplicada de novo — é o que dá o "pop" no momento de favoritar,
+   sem precisar de nenhum JS extra pra disparar a animação. */
+.favorite-button--active svg {
+  animation: favorite-pop 0.35s ease;
+}
+
+@keyframes favorite-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.35);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .favorite-button:active {
   transform: scale(0.85);
 }
@@ -37,5 +56,9 @@
 
   .favorite-button:active {
     transform: none;
+  }
+
+  .favorite-button--active svg {
+    animation: none;
   }
 }

@@ -1,0 +1,15 @@
+.event-image {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.event-image--loaded {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-image {
+    opacity: 1;
+    transition: none;
+  }
+}

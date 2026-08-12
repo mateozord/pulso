@@ -1,6 +1,7 @@
 import EventCard from './EventCard'
 import { EventCardSkeleton } from './Skeleton'
 import StateMessage from './StateMessage'
+import Reveal from './Reveal'
 import './EventRailSection.css'
 
 /**
@@ -14,7 +15,7 @@ function EventRailSection({ title, status, events, error, retry, emptyMessage, l
   const skeletonCount = layout === 'grid' ? 8 : 4
 
   return (
-    <section className="home-section">
+    <Reveal as="section" className="home-section">
       <h2 className="home-section__title">{title}</h2>
 
       {status === 'loading' && (
@@ -50,7 +51,7 @@ function EventRailSection({ title, status, events, error, retry, emptyMessage, l
           )}
         </div>
       )}
-    </section>
+    </Reveal>
   )
 }
 

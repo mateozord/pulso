@@ -1,13 +1,14 @@
 import { useFavorites } from '../hooks/useFavorites'
 import EventCard from '../components/EventCard'
 import StateMessage from '../components/StateMessage'
+import Reveal from '../components/Reveal'
 import './Favoritos.css'
 
 function Favoritos() {
   const { favorites } = useFavorites()
 
   return (
-    <section className="favoritos">
+    <Reveal as="section" className="favoritos">
       <h1>Favoritos</h1>
 
       {favorites.length === 0 ? (
@@ -24,7 +25,7 @@ function Favoritos() {
           ))}
         </div>
       )}
-    </section>
+    </Reveal>
   )
 }
 
