@@ -1,15 +1,25 @@
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import { useFavorites } from '../hooks/useFavorites'
 import './FavoriteButton.css'
 
 function FavoriteButton({ event, className = '' }) {
+  const { user } = useAuth()
   const { isFavorite, toggleFavorite } = useFavorites()
-  const active = isFavorite(event.id)
+  const navigate = useNavigate()
+  const active = user ? isFavorite(event.id) : false
 
   function handleClick(clickEvent) {
     // O botão costuma ficar dentro (visualmente) de um card clicável;
     // sem isso, favoritar também dispararia a navegação do card.
     clickEvent.preventDefault()
     clickEvent.stopPropagation()
+
+    if (!user) {
+      navigate('/login')
+      return
+    }
+
     toggleFavorite(event)
   }
 

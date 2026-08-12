@@ -1,48 +1,80 @@
 import { createContext, useEffect, useState } from 'react'
-
-const STORAGE_KEY = 'pulso:favoritos'
+import { supabase } from '../services/supabase'
+import { useAuth } from '../hooks/useAuth'
 
 export const FavoritesContext = createContext(null)
 
-function readFromStorage() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    // localStorage corrompido, bloqueado (modo anônimo restrito) ou
-    // indisponível — começamos vazio em vez de quebrar o app.
-    return []
-  }
-}
-
 export function FavoritesProvider({ children }) {
-  // O `useState(readFromStorage)` (passando a função, não o resultado)
-  // garante que a leitura do localStorage rode só uma vez, na
-  // primeira renderização — não a cada render.
-  const [favorites, setFavorites] = useState(readFromStorage)
+  const { user } = useAuth()
+  const [favorites, setFavorites] = useState([])
+  const [status, setStatus] = useState('idle') // 'idle' (deslogado) | 'loading' | 'ready'
 
-  // Sempre que a lista mudar, persiste de novo. É assim que o
-  // favorito sobrevive a um F5: na próxima vez que o app carregar,
-  // `readFromStorage` acima já devolve os dados salvos aqui.
+  // Roda de novo sempre que o usuário muda (login/logout) — é assim
+  // que os favoritos trocam pra conta certa, ou somem ao sair.
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites))
-    } catch {
-      // Ex.: modo anônimo com localStorage bloqueado. Falha silenciosa
-      // é aceitável aqui — o app continua funcionando, só não persiste.
+    if (!user) {
+      setFavorites([])
+      setStatus('idle')
+      return
     }
-  }, [favorites])
+
+    let cancelled = false
+    setStatus('loading')
+
+    supabase
+      .from('favorites')
+      .select('event_data')
+      .eq('user_id', user.id)
+      .then(({ data, error }) => {
+        if (cancelled) return
+        if (error) {
+          console.error('Erro ao carregar favoritos:', error.message)
+          setFavorites([])
+        } else {
+          setFavorites(data.map((row) => row.event_data))
+        }
+        setStatus('ready')
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [user])
 
   function isFavorite(id) {
     return favorites.some((event) => event.id === id)
   }
 
-  function addFavorite(event) {
+  // Atualização otimista: a tela reage na hora, antes da resposta do
+  // banco chegar. Se der erro, desfazemos — mais responsivo do que
+  // esperar a rede pra cada favorito, ao custo de um rollback raro.
+  async function addFavorite(event) {
+    if (!user) return
+
     setFavorites((current) => (current.some((e) => e.id === event.id) ? current : [...current, event]))
+
+    const { error } = await supabase
+      .from('favorites')
+      .insert({ user_id: user.id, event_id: event.id, event_data: event })
+
+    if (error) {
+      console.error('Erro ao favoritar:', error.message)
+      setFavorites((current) => current.filter((e) => e.id !== event.id))
+    }
   }
 
-  function removeFavorite(id) {
+  async function removeFavorite(id) {
+    if (!user) return
+
+    const previous = favorites
     setFavorites((current) => current.filter((event) => event.id !== id))
+
+    const { error } = await supabase.from('favorites').delete().eq('user_id', user.id).eq('event_id', id)
+
+    if (error) {
+      console.error('Erro ao remover favorito:', error.message)
+      setFavorites(previous)
+    }
   }
 
   function toggleFavorite(event) {
@@ -53,7 +85,7 @@ export function FavoritesProvider({ children }) {
     }
   }
 
-  const value = { favorites, isFavorite, addFavorite, removeFavorite, toggleFavorite }
+  const value = { favorites, status, isFavorite, addFavorite, removeFavorite, toggleFavorite }
 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>
 }

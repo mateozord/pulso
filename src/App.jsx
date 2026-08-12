@@ -6,6 +6,7 @@ import Explorar from './pages/Explorar'
 import Evento from './pages/Evento'
 import Artista from './pages/Artista'
 import Favoritos from './pages/Favoritos'
+import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import './App.css'
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/evento/:id" element={<Evento />} />
           <Route path="/artista/:id" element={<Artista />} />
           <Route path="/favoritos" element={<Favoritos />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
