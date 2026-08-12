@@ -11,6 +11,16 @@
   background: var(--color-bg-elevated);
 }
 
+.evento__image-wrap:hover .event-image {
+  transform: scale(1.03);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .evento__image-wrap:hover .event-image {
+    transform: none;
+  }
+}
+
 .evento__favorite {
   position: absolute;
   top: var(--space-3);

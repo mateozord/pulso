@@ -1,6 +1,12 @@
 .event-image {
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transform: scale(1);
+  /* opacity (fade ao carregar) e transform (zoom no hover, definido
+     por quem usa o componente) precisam estar na MESMA declaração —
+     se cada regra declarasse sua própria `transition`, a que
+     "ganhasse" a cascata sobrescreveria a outra inteira, e um dos
+     dois efeitos simplesmente pararia de funcionar. */
+  transition: opacity 0.4s ease, transform 0.35s ease;
 }
 
 .event-image--loaded {

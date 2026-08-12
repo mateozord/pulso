@@ -8,6 +8,8 @@ import EventRailSection from '../components/EventRailSection'
 import VenueCard from '../components/VenueCard'
 import GenreChips from '../components/GenreChips'
 import Reveal from '../components/Reveal'
+import PulseLine from '../components/PulseLine'
+import LiveDot from '../components/LiveDot'
 import './Home.css'
 
 function Home() {
@@ -36,6 +38,7 @@ function Home() {
           <CitySelector value={city} onChange={setCity} />
           <SearchBar onSearch={setKeyword} />
         </div>
+        <PulseLine className="hero__pulse" />
       </Reveal>
 
       <EventRailSection
@@ -58,7 +61,12 @@ function Home() {
       />
 
       <EventRailSection
-        title="Em alta"
+        title={
+          <>
+            <LiveDot />
+            Em alta
+          </>
+        }
         status={trending.status}
         events={trending.events}
         error={trending.error}

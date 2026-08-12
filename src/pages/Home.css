@@ -23,6 +23,11 @@
   flex-wrap: wrap;
 }
 
+.hero__pulse {
+  max-width: 20rem;
+  margin-top: var(--space-12);
+}
+
 .home-section {
   padding: var(--space-8) 0;
 }
