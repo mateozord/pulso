@@ -6,7 +6,15 @@
 
 .reveal--visible {
   opacity: 1;
-  transform: translateY(0);
+  /* `none` (não `translateY(0)`) de propósito: qualquer transform
+     diferente de `none` cria um novo stacking context no elemento,
+     mesmo um "translateY(0)" que visualmente não move nada. Isso
+     prendia dropdowns (com z-index próprio) atrás da próxima seção
+     da página, porque seções viram caixas de empilhamento separadas
+     e são pintadas na ordem do HTML, não por z-index entre si. Uma
+     transição de `translateY(16px)` até `none` funciona normalmente
+     — o navegador trata `none` como a transform "identidade". */
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
