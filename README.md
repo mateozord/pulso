@@ -107,12 +107,12 @@ npm run dev
 
 ## Deploy
 
-Hospedado na [Vercel](https://vercel.com/). Duas coisas específicas desse projeto valem explicar:
+O proxy anti-CORS da Ticketmaster que existe em `vite.config.js` só funciona em `npm run dev` — não roda em produção. Por isso o projeto tem **duas implementações equivalentes** do mesmo proxy, uma por plataforma (o app funciona em qualquer uma das duas, sem mudar nada no front-end — ele sempre chama `/api/ticketmaster/*`):
 
-- **`api/ticketmaster/[...path].js`** é o equivalente de produção do proxy que existe em `vite.config.js` só pra desenvolvimento — o `npm run dev` não roda em produção, então o proxy de dev não existe lá. É uma Vercel Function (Node.js) que faz exatamente o mesmo papel: recebe a chamada do navegador, injeta a `apikey` no lado do servidor, repassa pra Ticketmaster. Detectada automaticamente pela Vercel por estar em `/api` — não precisa de configuração extra.
-- **Variáveis de ambiente** precisam ser configuradas no painel do projeto na Vercel (Settings → Environment Variables), com os mesmos nomes do `.env` local: `TICKETMASTER_API_KEY`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`.
+- **[Vercel](https://vercel.com/)**: `api/ticketmaster/[...path].js`, detectada automaticamente por estar em `/api`, sem configuração extra.
+- **[Netlify](https://www.netlify.com/)**: `netlify/functions/ticketmaster.js` + redirects em `netlify.toml` (também cuida do fallback de SPA — sem isso, dar F5 numa rota interna como `/evento/123` vira 404, porque o servidor não sabe que essas rotas são resolvidas pelo React Router no navegador).
 
-Import automático: conectar o repositório do GitHub na Vercel já detecta o framework (Vite) e o diretório de build sem configuração manual.
+Em ambas, as **variáveis de ambiente** precisam ser configuradas no painel do projeto (não só no `.env` local): `TICKETMASTER_API_KEY`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`. Esquecer isso não dá erro visível — o app quebra silenciosamente com tela em branco, porque o cliente do Supabase lança uma exceção síncrona (`supabaseUrl is required.`) antes do React conseguir renderizar qualquer coisa.
 
 ## Screenshots
 

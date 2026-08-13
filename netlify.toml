@@ -1,0 +1,20 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# O front-end chama /api/ticketmaster/*, mesma URL usada em dev (via
+# proxy do vite.config.js) e na Vercel — esse redirect é o que faz
+# esse caminho existir também no Netlify, apontando pra function.
+[[redirects]]
+  from = "/api/ticketmaster/*"
+  to = "/.netlify/functions/ticketmaster/:splat"
+  status = 200
+
+# SPA: qualquer rota que não seja um arquivo real (ex.: /evento/123)
+# precisa cair no index.html pro React Router assumir o roteamento no
+# navegador — sem isso, dar F5 numa rota interna vira 404 no Netlify.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
