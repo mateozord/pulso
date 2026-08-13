@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useEvents } from '../hooks/useEvents'
+import { getEvents } from '../services/ticketmaster'
 import { getDateRangeFromToday } from '../utils/dateRange'
 import { GENRES } from '../utils/genres'
 import CitySelector from '../components/CitySelector'
@@ -9,6 +10,8 @@ import EventRailSection from '../components/EventRailSection'
 import Dropdown from '../components/Dropdown'
 import { usePageTitle } from '../hooks/usePageTitle'
 import './Explorar.css'
+
+const PAGE_SIZE = 24
 
 const GENRE_OPTIONS = [{ value: '', label: 'Todos os gêneros' }, ...GENRES.map((genre) => ({ value: genre, label: genre }))]
 
@@ -48,14 +51,46 @@ function Explorar() {
   }, [city, genre, period, keyword, setSearchParams])
 
   const { startDate, endDate } = useMemo(() => getPeriodRange(period), [period])
-  const { events, status, error, retry } = useEvents({
+  const { events, status, error, retry, totalPages } = useEvents({
     city,
     genre,
     keyword,
     startDate,
     endDate,
-    size: 24,
+    size: PAGE_SIZE,
   })
+
+  // Páginas extras carregadas via "Carregar mais". Ficam separadas de
+  // `events` (a página 0, controlada pelo useEvents) porque trocar um
+  // filtro deve *substituir* os resultados, mas clicar em "carregar
+  // mais" deve *somar* — dois comportamentos diferentes o bastante
+  // pra não valer a pena forçar dentro do hook genérico.
+  const [extraEvents, setExtraEvents] = useState([])
+  const [page, setPage] = useState(0)
+  const [loadingMore, setLoadingMore] = useState(false)
+
+  useEffect(() => {
+    setExtraEvents([])
+    setPage(0)
+  }, [city, genre, keyword, startDate, endDate])
+
+  async function handleLoadMore() {
+    const nextPage = page + 1
+    setLoadingMore(true)
+    try {
+      const result = await getEvents({ city, genre, keyword, startDate, endDate, size: PAGE_SIZE, page: nextPage })
+      setExtraEvents((current) => [...current, ...result.events])
+      setPage(nextPage)
+    } catch {
+      // Falha ao carregar mais não deve derrubar os resultados que já
+      // estão na tela — a pessoa pode simplesmente tentar de novo.
+    } finally {
+      setLoadingMore(false)
+    }
+  }
+
+  const allEvents = [...events, ...extraEvents]
+  const hasMore = page + 1 < totalPages
 
   return (
     <>
@@ -74,13 +109,21 @@ function Explorar() {
 
       <EventRailSection
         layout="grid"
-        title={status === 'success' ? `${events.length} ${events.length === 1 ? 'resultado' : 'resultados'}` : 'Resultados'}
+        title={status === 'success' ? `${allEvents.length} ${allEvents.length === 1 ? 'resultado' : 'resultados'}` : 'Resultados'}
         status={status}
-        events={events}
+        events={allEvents}
         error={error}
         retry={retry}
         emptyMessage="Nenhum show encontrado com esses filtros. Tente ampliar a busca."
       />
+
+      {status === 'success' && hasMore && (
+        <div className="explorar-load-more">
+          <button type="button" className="explorar-load-more__button" onClick={handleLoadMore} disabled={loadingMore}>
+            {loadingMore ? 'Carregando...' : 'Carregar mais'}
+          </button>
+        </div>
+      )}
     </>
   )
 }

@@ -13,6 +13,33 @@
   flex-basis: 240px;
 }
 
+.explorar-load-more {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) 0 var(--space-16);
+}
+
+.explorar-load-more__button {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: var(--space-3) var(--space-8);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.explorar-load-more__button:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.explorar-load-more__button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 @media (max-width: 600px) {
   .explorar-filters {
     flex-direction: column;

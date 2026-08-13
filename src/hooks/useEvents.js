@@ -19,6 +19,7 @@ export function useEvents({
 } = {}) {
   const [status, setStatus] = useState(enabled ? 'loading' : 'idle')
   const [events, setEvents] = useState([])
+  const [totalPages, setTotalPages] = useState(0)
   const [error, setError] = useState(null)
   const [retryCount, setRetryCount] = useState(0)
 
@@ -38,6 +39,7 @@ export function useEvents({
       .then((result) => {
         if (cancelled) return
         setEvents(result.events)
+        setTotalPages(result.totalPages)
         setStatus('success')
       })
       .catch((err) => {
@@ -55,5 +57,5 @@ export function useEvents({
 
   const retry = useCallback(() => setRetryCount((count) => count + 1), [])
 
-  return { events, status, error, retry }
+  return { events, status, error, retry, totalPages }
 }
