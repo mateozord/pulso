@@ -105,6 +105,15 @@ Rode a migração em `supabase/migrations/0001_favorites.sql` no SQL Editor do s
 npm run dev
 ```
 
+## Deploy
+
+Hospedado na [Vercel](https://vercel.com/). Duas coisas específicas desse projeto valem explicar:
+
+- **`api/ticketmaster/[...path].js`** é o equivalente de produção do proxy que existe em `vite.config.js` só pra desenvolvimento — o `npm run dev` não roda em produção, então o proxy de dev não existe lá. É uma Vercel Function (Node.js) que faz exatamente o mesmo papel: recebe a chamada do navegador, injeta a `apikey` no lado do servidor, repassa pra Ticketmaster. Detectada automaticamente pela Vercel por estar em `/api` — não precisa de configuração extra.
+- **Variáveis de ambiente** precisam ser configuradas no painel do projeto na Vercel (Settings → Environment Variables), com os mesmos nomes do `.env` local: `TICKETMASTER_API_KEY`, `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`.
+
+Import automático: conectar o repositório do GitHub na Vercel já detecta o framework (Vite) e o diretório de build sem configuração manual.
+
 ## Screenshots
 
 | Home | Explorar |
@@ -133,7 +142,7 @@ npm run dev
 
 **Pendente antes de qualquer lançamento real:** a confirmação de e-mail está desativada no projeto Supabase (foi desligada durante o desenvolvimento por causa do limite de envio do plano gratuito) — precisa ser reativada com um provedor de e-mail próprio (SMTP customizado) antes de abrir cadastro pro público.
 
-**Depois:** seguir artistas, busca por proximidade/geolocalização, mapa, recomendação, integração com calendário, notificações, compartilhamento, deploy em produção (a solução de CORS da Ticketmaster hoje só funciona em `npm run dev`; precisa de uma function serverless equivalente).
+**Depois:** seguir artistas, busca por proximidade/geolocalização, mapa, recomendação, integração com calendário, notificações, compartilhamento.
 
 ---
 
